@@ -100,7 +100,7 @@ class artshow_theme {
 		add_action( 'genesis_post_content', array( $this, 'do_post_content' ) );
 		add_action( 'genesis_loop_else', 'genesis_do_noposts' );
 		add_action( 'admin_menu', array( $this, 'add_meta_box' ) );
-		add_action( 'save_post', array( $this, 'save_data' )  );
+		add_action( 'save_post', array( $this, 'save_data' ) );
 		add_filter( 'post_class', array( $this, 'frame_class' ), 15 );
 		add_filter( 'post_class', array( $this, 'mat_class' ), 15 );
 
@@ -157,7 +157,7 @@ class artshow_theme {
 	}
 
 	function scripts_styles() {
-		if ( is_admin() ) return;
+		if ( is_admin() ) { return; }
 
 			wp_enqueue_script( 'pinterest', 'http://assets.pinterest.com/js/pinit.js' );
 
@@ -177,8 +177,8 @@ class artshow_theme {
 	}
 
 	function fallback_image( $img ) {
-		if ( empty( $img ) )
-			return get_stylesheet_directory_uri().'/images/site_image.jpg';
+		if ( empty( $img ) ) {
+			return get_stylesheet_directory_uri().'/images/site_image.jpg'; }
 
 		return $img;
 	}
@@ -187,15 +187,15 @@ class artshow_theme {
 		global $post;
 
 		$mat_color = get_post_meta( $post->ID, 'mat_color_radio', true );
-		if ( !empty( $mat_color ) ) {
-			if ( $mat_color == 'black_mat' ) $mat_color = '#000';
+		if ( ! empty( $mat_color ) ) {
+			if ( $mat_color == 'black_mat' ) { $mat_color = '#000'; }
 			elseif ( $mat_color == 'custom_mat' ) $mat_color = get_post_meta( $post->ID, 'choose_mat_color_radio', true );
-			else $mat_color = '';
+			else { $mat_color = ''; }
 		}
 		$colorcheck = is_string( $mat_color ) && isset( $mat_color[3] ) ? strtolower( $mat_color[3] ) : false;
 		$sig = ( $colorcheck > 3 || is_numeric( $colorcheck ) === false ) ? 'sig' : 'sig_white';
 
-		if ( !empty( $mat_color ) ) {
+		if ( ! empty( $mat_color ) ) {
 			?>
 			<style type="text/css">
 					.post-<?php the_ID(); ?> .entry-content {
@@ -219,9 +219,9 @@ class artshow_theme {
 		if ( is_object_in_term( get_the_ID(), 'orientation', 'landscape' ) ) {
 
 			$frame_color = get_post_meta( get_the_ID(), 'frame_color_radio', true );
-			if ( $frame_color == 'black_frame' ) $frame = '-black';
+			if ( $frame_color == 'black_frame' ) { $frame = '-black'; }
 			elseif ( $frame_color == 'brown_frame' ) $frame = '';
-			else $frame = '-default';
+			else { $frame = '-default'; }
 
 			echo '<div class="frame_bottom"><img src="'. get_stylesheet_directory_uri() .'/images/large-frame-bottom'. $frame .'.png" /></div>';
 		} ?>
@@ -231,15 +231,15 @@ class artshow_theme {
 
 	function white_div_end() {
 
-		if ( function_exists( 'sharing_display' ) )
-			echo sharing_display();
-		else
-			$this->fallback_sharing();
+		if ( function_exists( 'sharing_display' ) ) {
+			echo sharing_display(); }
+		else {
+			$this->fallback_sharing(); }
 
 		if ( class_exists( 'Jetpack_Likes' ) && is_callable( array( 'Jetpack_Likes', 'init' ) ) ) {
 			$likes = Jetpack_Likes::init();
 
-			echo $likes->post_likes('');
+			echo $likes->post_likes( '' );
 		}
 
 		?>
@@ -253,9 +253,9 @@ class artshow_theme {
 
 		if ( function_exists( 'dsgnwrks_bitly_short_link' ) ) {
 			$urls = get_post_meta( get_the_ID(), '_dsgnwrks_bitlylinks', true );
-			$twitter = !empty( $urls['twitter'] ) ? esc_url( $urls['twitter'] ) : esc_url( dsgnwrks_bitly_short_link( add_query_arg( 'source', 'twitter', $permalink ) ) );
-			$facebook = !empty( $urls['facebook'] ) ? esc_url( $urls['facebook'] ) : esc_url( dsgnwrks_bitly_short_link( add_query_arg( 'source', 'facebook', $permalink ) ) );
-			$standard = !empty( $urls['standard'] ) ? esc_url( $urls['standard'] ) : esc_url( dsgnwrks_bitly_short_link( $permalink ) );
+			$twitter = ! empty( $urls['twitter'] ) ? esc_url( $urls['twitter'] ) : esc_url( dsgnwrks_bitly_short_link( add_query_arg( 'source', 'twitter', $permalink ) ) );
+			$facebook = ! empty( $urls['facebook'] ) ? esc_url( $urls['facebook'] ) : esc_url( dsgnwrks_bitly_short_link( add_query_arg( 'source', 'facebook', $permalink ) ) );
+			$standard = ! empty( $urls['standard'] ) ? esc_url( $urls['standard'] ) : esc_url( dsgnwrks_bitly_short_link( $permalink ) );
 		}
 
 		?>
@@ -278,12 +278,12 @@ class artshow_theme {
 		if ( is_singular() ) {
 
 			if ( is_page() ) {
-					edit_post_link(__('(Edit)', 'genesis'), '', '');
+					edit_post_link( __( '(Edit)', 'genesis' ), '', '' );
 			} else {
 
 				$this->image_loop( true );
 
-				if ( is_single() && get_option('default_ping_status') == 'open' ) {
+				if ( is_single() && get_option( 'default_ping_status' ) == 'open' ) {
 					echo '<!--'; trackback_rdf(); echo '-->' ."\n";
 				}
 			}
@@ -400,8 +400,8 @@ class artshow_theme {
 
 	// Add meta box
 	function add_meta_box() {
-		foreach ( $this->meta_box['pages'] as $page) {
-				add_meta_box($this->meta_box['id'], $this->meta_box['title'], array( $this, 'metabox_display' ), $page, $this->meta_box['context'], $this->meta_box['priority']);
+		foreach ( $this->meta_box['pages'] as $page ) {
+				add_meta_box( $this->meta_box['id'], $this->meta_box['title'], array( $this, 'metabox_display' ), $page, $this->meta_box['context'], $this->meta_box['priority'] );
 		}
 	}
 
@@ -410,18 +410,18 @@ class artshow_theme {
 		global $post;
 
 		// Use nonce for verification
-		echo '<input type="hidden" name="jtsternberg_meta_box_nonce" value="', wp_create_nonce(basename(__FILE__)), '" />';
+		echo '<input type="hidden" name="jtsternberg_meta_box_nonce" value="', wp_create_nonce( basename( __FILE__ ) ), '" />';
 
 		echo '<table class="form-table picture_options">';
 
-		foreach ($this->meta_box['fields'] as $field) {
+		foreach ( $this->meta_box['fields'] as $field ) {
 			// get current post meta data
-			$meta = get_post_meta($post->ID, $field['id'], true);
+			$meta = get_post_meta( $post->ID, $field['id'], true );
 			$desc = isset( $field['desc'] ) ? $field['desc'] : '';
 			echo '<tr>',
 						'<th style="width:65px;"><b><label for="', $field['id'], '">', $field['name'], '</label></b></th>',
 						'<td>';                '<td>';
-			switch ($field['type']) {
+			switch ( $field['type'] ) {
 				case 'text':
 					echo '<label><input style="width: 100%;" type="text" name="', $field['id'], '" id="', $field['id'], '" value="', $meta ? $meta : '', '" size="30" />', '<br />', $desc, '</label>';
 					break;
@@ -430,13 +430,13 @@ class artshow_theme {
 					break;
 				case 'select':
 					echo '<select name="', $field['id'], '" id="', $field['id'], '">';
-					foreach ($field['options'] as $option) {
+					foreach ( $field['options'] as $option ) {
 						echo '<option', $meta == $option ? ' selected="selected"' : '', '>', $option, '</option>';
 					}
 					echo '</select>';
 					break;
 				case 'radio':
-					foreach ($field['options'] as $option) {
+					foreach ( $field['options'] as $option ) {
 						echo '<label><input type="radio" name="', $field['id'], '" id="', $field['id'] .'_'. $option['value'], '" value="', $option['value'], '"', $meta == $option['value'] ? ' checked="checked"' : '', ' />', $option['name'], '</label>';
 					}
 					break;
@@ -509,45 +509,45 @@ class artshow_theme {
 	function save_data($post_id) {
 
 		// verify nonce
-		if ( !isset( $_POST['jtsternberg_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['jtsternberg_meta_box_nonce'], basename(__FILE__) ) ) {
+		if ( ! isset( $_POST['jtsternberg_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['jtsternberg_meta_box_nonce'], basename( __FILE__ ) ) ) {
 			return $post_id;
 		}
 
 		// check autosave
-		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 				return $post_id;
 		}
 
 		// check permissions
-		if ('page' == $_POST['post_type']) {
-			if (!current_user_can('edit_page', $post_id)) {
+		if ( 'page' == $_POST['post_type'] ) {
+			if ( ! current_user_can( 'edit_page', $post_id ) ) {
 				return $post_id;
 			}
-		} elseif (!current_user_can('edit_post', $post_id)) {
+		} elseif ( ! current_user_can( 'edit_post', $post_id ) ) {
 			return $post_id;
 		}
 
-		foreach ($this->meta_box['fields'] as $field) {
-			$old = get_post_meta($post_id, $field['id'], true);
+		foreach ( $this->meta_box['fields'] as $field ) {
+			$old = get_post_meta( $post_id, $field['id'], true );
 			$new = isset( $_POST[$field['id']] ) ? $_POST[$field['id']] : '';
 
-			if ($new && $new != $old) {
-				update_post_meta($post_id, $field['id'], $new);
-			} elseif ('' == $new && $old) {
-				delete_post_meta($post_id, $field['id'], $old);
+			if ( $new && $new != $old ) {
+				update_post_meta( $post_id, $field['id'], $new );
+			} elseif ( '' == $new && $old ) {
+				delete_post_meta( $post_id, $field['id'], $old );
 			}
 		}
 	}
 
 	function frame_class( $classes ) {
 		global $post;
-		$new_class = get_post_meta($post->ID, 'frame_color_radio', true);
-		if ( $new_class ) $classes[] =  $new_class;
+		$new_class = get_post_meta( $post->ID, 'frame_color_radio', true );
+		if ( $new_class ) { $classes[] = $new_class; }
 
 		$orientations = wp_get_object_terms( $post->ID, 'orientation' );
-		if ( !empty( $orientations ) ) {
+		if ( ! empty( $orientations ) ) {
 			foreach ( $orientations as $orientation ) {
-				$classes[] =  'orientation-'. $orientation->slug;
+				$classes[] = 'orientation-'. $orientation->slug;
 			}
 		}
 
@@ -556,8 +556,8 @@ class artshow_theme {
 
 	function mat_class( $classes ) {
 		global $post;
-		$new_class = get_post_meta($post->ID, 'mat_color_radio', true);
-		if ( $new_class ) $classes[] =  $new_class;
+		$new_class = get_post_meta( $post->ID, 'mat_color_radio', true );
+		if ( $new_class ) { $classes[] = $new_class; }
 		return $classes;
 	}
 
@@ -570,21 +570,21 @@ class artshow_theme {
 	 * @since 0.2.3
 	 */
 	function posts_nav() {
-		if( is_singular() ) return; // do nothing
-
+		if ( is_singular() ) { return; // do nothing
+		}
 		global $wp_query;
 
 		// Stop execution if there's only 1 page
-		if( $wp_query->max_num_pages <= 1 ) return;
+		if ( $wp_query->max_num_pages <= 1 ) { return; }
 
-		$paged = get_query_var('paged') ? absint( get_query_var('paged') ) : 1;
+		$paged = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
 		$max = intval( $wp_query->max_num_pages );
 
 		echo '<div class="navigation"><ul>' . "\n";
 
 		//  add current page to the array
-		if ( $paged >= 1 )
-			$links[] = $paged;
+		if ( $paged >= 1 ) {
+			$links[] = $paged; }
 
 		//  add the pages around the current page to the array
 		if ( $paged >= 3 ) {
@@ -595,47 +595,47 @@ class artshow_theme {
 		}
 
 		//  Previous Post Link
-		if ( get_previous_posts_link() )
-			printf( '<li class="view_room">%s</li>' . "\n", get_previous_posts_link( g_ent( __('<strong class="larr">&larr;</strong> Previous Room', 'genesis') ) ) );
+		if ( get_previous_posts_link() ) {
+			printf( '<li class="view_room">%s</li>' . "\n", get_previous_posts_link( g_ent( __( '<strong class="larr">&larr;</strong> Previous Room', 'genesis' ) ) ) ); }
 
 		//  Link to first Page, plus ellipeses, if necessary
-		if ( !in_array( 1, $links ) ) {
-			if ( $paged == 1 ) $current = ' class="active"'; else $current = null;
-			printf( '<li %s><a href="%s">%s</a></li>' . "\n", $current, get_pagenum_link(1), '1' );
+		if ( ! in_array( 1, $links ) ) {
+			if ( $paged == 1 ) { $current = ' class="active"'; } else { $current = null; }
+			printf( '<li %s><a href="%s">%s</a></li>' . "\n", $current, get_pagenum_link( 1 ), '1' );
 
-			if ( !in_array( 2, $links ) )
-				echo g_ent('<li>&hellip;</li>');
+			if ( ! in_array( 2, $links ) ) {
+				echo g_ent( '<li>&hellip;</li>' ); }
 		}
 
 		//  Link to Current page, plus 2 pages in either direction (if necessary).
 		sort( $links );
-		foreach( (array)$links as $link ) {
+		foreach ( (array)$links as $link ) {
 			$current = ( $paged == $link ) ? 'class="active"' : '';
-			printf( '<li %s><a href="%s">%s</a></li>' . "\n", $current, get_pagenum_link($link), $link );
+			printf( '<li %s><a href="%s">%s</a></li>' . "\n", $current, get_pagenum_link( $link ), $link );
 		}
 
 		//  Link to last Page, plus ellipses, if necessary
-		if ( !in_array( $max, $links ) ) {
-			if ( !in_array( $max - 1, $links ) )
-				echo g_ent('<li>&hellip;</li>') . "\n";
+		if ( ! in_array( $max, $links ) ) {
+			if ( ! in_array( $max - 1, $links ) ) {
+				echo g_ent( '<li>&hellip;</li>' ) . "\n"; }
 
 			$current = ( $paged == $max ) ? 'class="active"' : '';
-			printf( '<li %s><a href="%s">%s</a></li>' . "\n", $current, get_pagenum_link($max), $max );
+			printf( '<li %s><a href="%s">%s</a></li>' . "\n", $current, get_pagenum_link( $max ), $max );
 		}
 
 		//  Next Post Link
-		if ( get_next_posts_link() )
-			printf( '<li class="view_room">%s</li>' . "\n", get_next_posts_link( g_ent( __('Next Room <strong class="rarr">&rarr;</strong>', 'genesis') ) ) );
+		if ( get_next_posts_link() ) {
+			printf( '<li class="view_room">%s</li>' . "\n", get_next_posts_link( g_ent( __( 'Next Room <strong class="rarr">&rarr;</strong>', 'genesis' ) ) ) ); }
 
 		echo '</ul></div>' . "\n";
 	}
 
 	function older_link_text() {
-		$olderlink = g_ent('<strong>&larr;</strong> ') . 'Older Photos';
+		$olderlink = g_ent( '<strong>&larr;</strong> ' ) . 'Older Photos';
 		return $olderlink;
 	}
 	function newer_link_text() {
-		$newerlink = 'Newer Photos' . g_ent(' <strong>&rarr;</strong');
+		$newerlink = 'Newer Photos' . g_ent( ' <strong>&rarr;</strong' );
 		return $newerlink;
 	}
 
@@ -712,13 +712,13 @@ class artshow_theme {
 	function set_terms_on_save( $post_id ) {
 
 		$terms = get_the_terms( $post_id, 'category' );
-		if ( ! is_array( $terms ) )
-			return;
+		if ( ! is_array( $terms ) ) {
+			return; }
 
 		$terms = wp_list_pluck( $terms, 'slug' );
 
-		if ( is_array( $terms ) && in_array( 'pressgram', $terms ) )
-			wp_set_object_terms( $post_id, array( 'Square' ), 'orientation' );
+		if ( is_array( $terms ) && in_array( 'pressgram', $terms ) ) {
+			wp_set_object_terms( $post_id, array( 'Square' ), 'orientation' ); }
 	}
 
 }
