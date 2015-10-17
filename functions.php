@@ -2,10 +2,7 @@
 /**
  * Art Show
  *
- * TODO for Resale:
- *
- * Remove layout options. (only full screen)
- * Limit image sizes
+ * TODO:
  * Clean up/organize files
  *
  * @version  0.1.0
