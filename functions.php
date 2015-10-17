@@ -13,19 +13,19 @@
  */
 
 /** Start the engine **/
-require_once(TEMPLATEPATH.'/lib/init.php');
-require_once(CHILD_DIR.'/lib/taxonomies.php');
+require_once( TEMPLATEPATH.'/lib/init.php' );
+require_once( CHILD_DIR.'/lib/taxonomies.php' );
 
 class artshow_theme {
 	public static $instance = null;
 
 	public $meta_box = array(
-		'id' => 'my-meta-box-1',
-		'title' => 'Frame Style',
-		'pages' => array('post'), // multiple post types, accept custom post types
-		'context' => 'side',
+		'id'       => 'my-meta-box-1',
+		'title'    => 'Frame Style',
+		'pages'    => array( 'post' ), // multiple post types, accept custom post types
+		'context'  => 'side',
 		'priority' => 'default',
-		'fields' => array(
+		'fields'   => array(
 			array(
 				'name'    => 'Frame Color',
 				'id'      => 'frame_color_radio',
@@ -67,8 +67,8 @@ class artshow_theme {
 		// Jetpack infinite scroll
 		add_theme_support( 'infinite-scroll', array(
 			'container' => 'content',
-			'footer' => 'nav',
-			'render' => array( $this, 'render_infinite_scroll' ) ,
+			'footer'    => 'nav',
+			'render'    => array( $this, 'render_infinite_scroll' ) ,
 		) );
 
 		// Remove Genesis functions
@@ -368,9 +368,9 @@ class artshow_theme {
 
 	function image_src( $attach_id, $args = array() ) {
 		$args = wp_parse_args( $args, array(
-			'image_size' => 'fullsize',
+			'image_size'   => 'fullsize',
 			'anchor_class' => '',
-			'permalink' => '',
+			'permalink'    => '',
 		) );
 
 		$imgurl = wp_get_attachment_image_src( $attach_id, $args['image_size'] );
