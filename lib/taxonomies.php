@@ -14,28 +14,28 @@ function jtsternberg_taxonomies_register() {
 function jtsternberg_taxonomies( $singular, $plural, $post_types, $custom_args = array() ) {
 
 	$labels = array(
-	  'name' => _x( $plural, 'taxonomy general name' ),
-	  'singular_name' => _x( $singular, 'taxonomy singular name' ),
-	  'search_items' => __( 'Search '.$plural ),
-	  'popular_items' => __( 'Common '.$plural ),
-	  'all_items' => __( 'All '.$plural ),
-	  'parent_item' => null,
-	  'parent_item_colon' => null,
-	  'edit_item' => __( 'Edit '.$singular ),
-	  'update_item' => __( 'Update '.$singular ),
-	  'add_new_item' => __( 'Add New '.$singular ),
-	  'new_item_name' => __( 'New '. $singular .' Name' ),
+	  'name'                       => _x( $plural, 'taxonomy general name' ),
+	  'singular_name'              => _x( $singular, 'taxonomy singular name' ),
+	  'search_items'               => __( 'Search '.$plural ),
+	  'popular_items'              => __( 'Common '.$plural ),
+	  'all_items'                  => __( 'All '.$plural ),
+	  'parent_item'                => null,
+	  'parent_item_colon'          => null,
+	  'edit_item'                  => __( 'Edit '.$singular ),
+	  'update_item'                => __( 'Update '.$singular ),
+	  'add_new_item'               => __( 'Add New '.$singular ),
+	  'new_item_name'              => __( 'New '. $singular .' Name' ),
 	  'separate_items_with_commas' => __( 'Separate '. $plural. ' with commas' ),
-	  'add_or_remove_items' => __( 'Add or remove '.$plural ),
-	  'choose_from_most_used' => __( 'Choose from the most used '.$plural )
+	  'add_or_remove_items'        => __( 'Add or remove '.$plural ),
+	  'choose_from_most_used'      => __( 'Choose from the most used '.$plural )
 	);
 
 	$defaults = array(
 	  'hierarchical' => true,
-	  'labels' => $labels,
-	  'show_ui' => true,
-	  'query_var' => true,
-	  'rewrite' => array( 'slug' => sanitize_title( $plural ) ),
+	  'labels'       => $labels,
+	  'show_ui'      => true,
+	  'query_var'    => true,
+	  'rewrite'       => array( 'slug' => sanitize_title( $plural ) ),
 	);
 
 	$args = wp_parse_args( $custom_args, $defaults );
@@ -54,7 +54,7 @@ function jtsternberg_taxonomy_columns($columns){
 }
 
 add_action( 'manage_posts_custom_column' , 'jtsternberg_taxonomy_columns_display' );
-function jtsternberg_taxonomy_columns_display($column){
+function jtsternberg_taxonomy_columns_display( $column ){
 	global $post;
 	switch ( $column ) {
 		case 'jt-orientation';
@@ -77,7 +77,8 @@ function jtsternberg_taxonomy_columns_display($column){
 
 function jtsternberg_orientation_select_metabox() {
 	if ( ! is_admin() ) {
-		return; }
+		return;
+	}
 	add_action( 'admin_menu', 'jtsternberg_add_orientation_select_metabox' );
 	add_action( 'save_post', 'jtsternberg_save_orientation_taxonomy_data' );
 }
@@ -133,7 +134,8 @@ function jtsternberg_save_orientation_taxonomy_data( $post_id ) {
 		  return $post_id;
 	} else {
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			return $post_id; }
+			return $post_id;
+		}
 	}
 
 	// OK, we're authenticated: we need to find and save the data
@@ -142,6 +144,6 @@ function jtsternberg_save_orientation_taxonomy_data( $post_id ) {
 	if ( ! empty( $orientation ) ) {
 		wp_set_object_terms( $post_id, $orientation, 'orientation' );
 	}
+	
 	return $orientation;
-
 }
