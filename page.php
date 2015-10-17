@@ -10,7 +10,5 @@ add_action( 'genesis_post_title', 'genesis_do_post_title' );
 add_action( 'genesis_after_post_content', 'genesis_post_meta' );
 add_action( 'genesis_before_post_content', 'genesis_post_info' );
 
-
-
-	genesis(); // <- everything important: make sure to include this.
-	?>
+genesis(); // <- everything important: make sure to include this.
+?>
