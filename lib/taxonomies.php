@@ -6,45 +6,42 @@ add_action( 'init', 'jtsternberg_taxonomies_register', 0 );
  */
 function jtsternberg_taxonomies_register() {
 
-	jtsternberg_taxonomies( 'Orientation', 'Orientation', array( 'post' ) );
+	jtsternberg_taxonomies();
 
 	jtsternberg_orientation_select_metabox();
 }
 
-function jtsternberg_taxonomies( $singular, $plural, $post_types, $custom_args = array() ) {
+function jtsternberg_taxonomies( $post_types ) {
 
+	$name = _x( 'Orientation', 'taxonomy general name' );
 	$labels = array(
-	  'name'                       => _x( $plural, 'taxonomy general name' ),
-	  'singular_name'              => _x( $singular, 'taxonomy singular name' ),
-	  'search_items'               => __( 'Search '.$plural ),
-	  'popular_items'              => __( 'Common '.$plural ),
-	  'all_items'                  => __( 'All '.$plural ),
-	  'parent_item'                => null,
-	  'parent_item_colon'          => null,
-	  'edit_item'                  => __( 'Edit '.$singular ),
-	  'update_item'                => __( 'Update '.$singular ),
-	  'add_new_item'               => __( 'Add New '.$singular ),
-	  'new_item_name'              => __( 'New '. $singular .' Name' ),
-	  'separate_items_with_commas' => __( 'Separate '. $plural. ' with commas' ),
-	  'add_or_remove_items'        => __( 'Add or remove '.$plural ),
-	  'choose_from_most_used'      => __( 'Choose from the most used '.$plural )
+		'name'                       => $name,
+		'singular_name'              => $name,
+		'search_items'               => __( 'Search Orientations' ),
+		'popular_items'              => __( 'Common Orientations' ),
+		'all_items'                  => __( 'All Orientations' ),
+		'parent_item'                => null,
+		'parent_item_colon'          => null,
+		'edit_item'                  => __( 'Edit Orientation' ),
+		'update_item'                => __( 'Update Orientation' ),
+		'add_new_item'               => __( 'Add New Orientation' ),
+		'new_item_name'              => __( 'New Orientation Name' ),
+		'separate_items_with_commas' => __( 'Separate Orientations with commas' ),
+		'add_or_remove_items'        => __( 'Add or remove Orientations' ),
+		'choose_from_most_used'      => __( 'Choose from the most used Orientations' )
 	);
 
 	$defaults = array(
-	  'hierarchical' => true,
-	  'labels'       => $labels,
-	  'show_ui'      => true,
-	  'query_var'    => true,
-	  'rewrite'       => array( 'slug' => sanitize_title( $plural ) ),
+		'hierarchical' => true,
+		'labels'       => $labels,
+		'show_ui'      => true,
+		'query_var'    => true,
+		'rewrite'      => array( 'slug' => sanitize_title( $plural ) ),
 	);
 
-	$args = wp_parse_args( $custom_args, $defaults );
-
 	register_taxonomy( sanitize_title( $plural ), $post_types, $args );
-
 }
 
-add_filter( 'manage_edit-post_columns', 'jtsternberg_taxonomy_columns' );
 function jtsternberg_taxonomy_columns($columns){
 	$newcolumns = array(
 		'jt-orientation' => 'Photo Orientation',
@@ -52,9 +49,9 @@ function jtsternberg_taxonomy_columns($columns){
 	$columns = array_merge( $columns, $newcolumns );
 	return $columns;
 }
+add_filter( 'manage_edit-post_columns', 'jtsternberg_taxonomy_columns' );
 
-add_action( 'manage_posts_custom_column' , 'jtsternberg_taxonomy_columns_display' );
-function jtsternberg_taxonomy_columns_display( $column ){
+function jtsternberg_taxonomy_columns_display( $column ) {
 	global $post;
 	switch ( $column ) {
 		case 'jt-orientation';
@@ -74,6 +71,7 @@ function jtsternberg_taxonomy_columns_display( $column ){
 		break;
 	}
 }
+add_action( 'manage_posts_custom_column' , 'jtsternberg_taxonomy_columns_display' );
 
 function jtsternberg_orientation_select_metabox() {
 	if ( ! is_admin() ) {
@@ -107,7 +105,9 @@ function jtsternberg_add_orientation_dropdown_box_function( $post ) {
 	echo "<div style='margin-bottom: 5px;'><input style='margin-right: 5px;' type='radio' name='orientation_option' id='option-research' value='' ". $checked ."/><label for='option-research'>No Orientation Specified</label></div>\n";
 	foreach ( $terms as $term ) {
 
-		if ( $term->slug == 'research' ) { continue; }
+		if ( $term->slug == 'research' ) {
+			continue;
+		}
 
 		echo "<div style='margin-bottom: 5px;'><input style='margin-right: 5px;' type='radio' name='orientation_option' id='option-".  $term->slug ."' value='" . $term->slug . "'";
 		if ( ! is_wp_error( $names ) && ! empty( $names ) && ! strcmp( $term->slug, $names[0]->slug ) ) {
@@ -127,23 +127,22 @@ function jtsternberg_save_orientation_taxonomy_data( $post_id ) {
 
 	// verify if this is an auto save routine. If it is our form has not been submitted, so we dont want to do anything
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-		return $post_id; }
+		return $post_id;
+	}
 
 	// Check permissions
 	if ( 'post' != $_POST['post_type'] ) {
 		  return $post_id;
-	} else {
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			return $post_id;
-		}
+	} elseif ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return $post_id;
 	}
 
 	// OK, we're authenticated: we need to find and save the data
 	$orientation = ( $_POST['orientation_option'] ) ? $_POST['orientation_option'] : '';
 
 	if ( ! empty( $orientation ) ) {
-		wp_set_object_terms( $post_id, $orientation, 'orientation' );
+		wp_set_object_terms( $post_id, sanitize_text_field( $orientation ), 'orientation' );
 	}
-	
+
 	return $orientation;
 }
