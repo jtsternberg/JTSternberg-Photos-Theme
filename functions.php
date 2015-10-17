@@ -20,7 +20,7 @@ class artshow_theme {
 	public static $instance = null;
 
 	public $meta_box = array(
-		'id'       => 'my-meta-box-1',
+		'id'       => 'frame-style',
 		'title'    => 'Frame Style',
 		'pages'    => array( 'post' ), // multiple post types, accept custom post types
 		'context'  => 'side',
