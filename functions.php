@@ -120,6 +120,8 @@ class artshow_theme {
 		// Set Pressgram terms
 		add_action( 'save_post', array( $this, 'set_terms_on_save' ), 22 );
 
+		// Keep 'personal' category out of homepage.
+		add_action( 'pre_get_posts', array( $this, 'remove_personal_from_homepage' ), 22 );
 	}
 
 	/**
@@ -720,6 +722,25 @@ class artshow_theme {
 
 		if ( is_array( $terms ) && in_array( 'pressgram', $terms ) ) {
 			wp_set_object_terms( $post_id, array( 'Square' ), 'orientation' ); }
+	}
+
+	public function remove_personal_from_homepage( $query ) {
+		// Only ignore on homepage main query.
+		if ( ! $query->is_home() || ! $query->is_main_query() ) {
+			return;
+		}
+
+		// Filter categories to ignore on the homepage.
+		$category_ids_to_ignore = (array) apply_filters( 'art_show_category_ids_to_remove_from_homepage', array() );
+
+		if ( empty( $category_ids_to_ignore ) && false !== $category_ids_to_ignore ) {
+			$term = get_term_by( 'name', 'Personal', 'category' );
+			$category_ids_to_ignore = isset( $term->term_id ) ? array( $term->term_id ) : array();
+		}
+
+		if ( ! empty( $category_ids_to_ignore ) ) {
+			$query->set( 'category__not_in', $category_ids_to_ignore );
+		}
 	}
 
 }
