@@ -78,6 +78,8 @@ class artshow_theme {
 
 		// Add support for 3-column footer widgets
 		add_theme_support( 'genesis-footer-widgets', 3 );
+		// title tag
+		add_theme_support( 'title-tag' );
 		add_image_size( 'instagram', 612, 612, true );
 		add_image_size( 'fullsize', 820, 804 );
 		add_action( 'genesis_meta', array( $this, 'meta' ) );
