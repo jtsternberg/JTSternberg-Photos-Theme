@@ -36,10 +36,10 @@ function jtsternberg_taxonomies( $post_types ) {
 		'labels'       => $labels,
 		'show_ui'      => true,
 		'query_var'    => true,
-		'rewrite'      => array( 'slug' => sanitize_title( $plural ) ),
+		'rewrite'      => array( 'slug' => 'orientation' ),
 	);
 
-	register_taxonomy( sanitize_title( $plural ), $post_types, $args );
+	register_taxonomy( 'orientation', $post_types, $args );
 }
 
 function jtsternberg_taxonomy_columns($columns){
