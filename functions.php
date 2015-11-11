@@ -548,6 +548,8 @@ class artshow_theme {
 			foreach ( $orientations as $orientation ) {
 				$classes[] = 'orientation-'. $orientation->slug;
 			}
+		} elseif ( $default_orientation = apply_filters( 'art_show_default_orientation_for_post_class', '' ) ) {
+			$classes[] = "orientation-$default_orientation";
 		}
 
 		return $classes;
