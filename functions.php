@@ -226,12 +226,11 @@ class artshow_theme {
 		if ( is_object_in_term( get_the_ID(), 'orientation', 'landscape' ) ) {
 			$frame_color = get_post_meta( get_the_ID(), 'frame_color_radio', true );
 			$frame = '-default';
-			if ( 'black_frame' === $frame_color ) {
+			if ( $frame_color == 'black_frame' ) {
 				$frame = '-black';
-			} elseif ( 'brown_frame' === $frame_color ) {
+			} elseif ( $frame_color == 'brown_frame' ) {
 				$frame = '';
 			}
-		}
 
 			echo '<div class="frame_bottom"><img src="'. get_stylesheet_directory_uri() .'/images/large-frame-bottom'. $frame .'.png" /></div>';
 		} ?>
