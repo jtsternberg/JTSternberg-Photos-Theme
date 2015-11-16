@@ -158,7 +158,9 @@ class artshow_theme {
 	}
 
 	function scripts_styles() {
-		if ( is_admin() ) { return; }
+		if ( is_admin() ) {
+			return;
+		}
 
 			wp_enqueue_script( 'pinterest', 'http://assets.pinterest.com/js/pinit.js' );
 
@@ -179,7 +181,8 @@ class artshow_theme {
 
 	function fallback_image( $img ) {
 		if ( empty( $img ) ) {
-			return get_stylesheet_directory_uri().'/images/site_image.jpg'; }
+			return get_stylesheet_directory_uri().'/images/site_image.jpg';
+		}
 
 		return $img;
 	}
@@ -189,9 +192,12 @@ class artshow_theme {
 
 		$mat_color = get_post_meta( $post->ID, 'mat_color_radio', true );
 		if ( ! empty( $mat_color ) ) {
-			if ( $mat_color == 'black_mat' ) { $mat_color = '#000'; }
-			elseif ( $mat_color == 'custom_mat' ) $mat_color = get_post_meta( $post->ID, 'choose_mat_color_radio', true );
-			else { $mat_color = ''; }
+			$mat_color = '';
+			if ( 'black_mat' === $mat_color ) {
+				$mat_color = '#000';
+			} elseif ( 'custom_mat' === $mat_color ) {
+				$mat_color = get_post_meta( $post->ID, 'choose_mat_color_radio', true );
+			}
 		}
 		$colorcheck = is_string( $mat_color ) && isset( $mat_color[3] ) ? strtolower( $mat_color[3] ) : false;
 		$sig = ( $colorcheck > 3 || is_numeric( $colorcheck ) === false ) ? 'sig' : 'sig_white';
@@ -218,11 +224,14 @@ class artshow_theme {
 	function white_div() {
 
 		if ( is_object_in_term( get_the_ID(), 'orientation', 'landscape' ) ) {
-
 			$frame_color = get_post_meta( get_the_ID(), 'frame_color_radio', true );
-			if ( $frame_color == 'black_frame' ) { $frame = '-black'; }
-			elseif ( $frame_color == 'brown_frame' ) $frame = '';
-			else { $frame = '-default'; }
+			$frame = '-default';
+			if ( 'black_frame' === $frame_color ) {
+				$frame = '-black';
+			} elseif ( 'brown_frame' === $frame_color ) {
+				$frame = '';
+			}
+		}
 
 			echo '<div class="frame_bottom"><img src="'. get_stylesheet_directory_uri() .'/images/large-frame-bottom'. $frame .'.png" /></div>';
 		} ?>
@@ -233,9 +242,11 @@ class artshow_theme {
 	function white_div_end() {
 
 		if ( function_exists( 'sharing_display' ) ) {
-			echo sharing_display(); }
+			echo sharing_display();
+		}
 		else {
-			$this->fallback_sharing(); }
+			$this->fallback_sharing();
+		}
 
 		if ( class_exists( 'Jetpack_Likes' ) && is_callable( array( 'Jetpack_Likes', 'init' ) ) ) {
 			$likes = Jetpack_Likes::init();
@@ -279,7 +290,7 @@ class artshow_theme {
 		if ( is_singular() ) {
 
 			if ( is_page() ) {
-					edit_post_link( __( '(Edit)', 'genesis' ), '', '' );
+					edit_post_link( __( '(Edit)', 'artshow' ), '', '' );
 			} else {
 
 				$this->image_loop( true );
@@ -294,7 +305,7 @@ class artshow_theme {
 			$this->image_loop();
 		}
 
-		wp_link_pages( array( 'before' => '<p class="pages">' . __( 'Pages:', 'genesis' ), 'after' => '</p>' ) );
+		wp_link_pages( array( 'before' => '<p class="pages">' . __( 'Pages:', 'artshow' ), 'after' => '</p>' ) );
 
 	}
 
@@ -543,14 +554,17 @@ class artshow_theme {
 	function frame_class( $classes ) {
 		global $post;
 		$new_class = get_post_meta( $post->ID, 'frame_color_radio', true );
-		if ( $new_class ) { $classes[] = $new_class; }
+		if ( $new_class ) {
+			$classes[] = $new_class;
+		}
 
 		$orientations = wp_get_object_terms( $post->ID, 'orientation' );
 		if ( ! empty( $orientations ) ) {
 			foreach ( $orientations as $orientation ) {
 				$classes[] = 'orientation-'. $orientation->slug;
 			}
-		} elseif ( $default_orientation = apply_filters( 'art_show_default_orientation_for_post_class', '' ) ) {
+		} elseif (
+			$default_orientation = apply_filters( 'art_show_default_orientation_for_post_class', '' ) ) {
 			$classes[] = "orientation-$default_orientation";
 		}
 
@@ -559,13 +573,13 @@ class artshow_theme {
 
 	function mat_class( $classes ) {
 		global $post;
-		$new_class = get_post_meta( $post->ID, 'mat_color_radio', true );
-		if ( $new_class ) { $classes[] = $new_class; }
+		if ( $new_class = get_post_meta( $post->ID, 'mat_color_radio', true ) ) {
+			$classes[] = $new_class;
+		}
 		return $classes;
 	}
 
-	/*if ( get_post_meta( get_the_ID(), 'hide-comments', true) == 'yes' ) { ?><br /><br /><p>Comments closed on this post.</p><?php }
-	else { comments_template(); }*/
+	/*if ( get_post_meta( get_the_ID(), 'hide-comments', true) == 'yes' ) { ?><br /><br /><p>Comments closed on this post.</p><?php } else { comments_template(); }*/
 
 	/**
 	 * Display numeric posts navigation (similar to WP-PageNavi)
@@ -573,77 +587,100 @@ class artshow_theme {
 	 * @since 0.2.3
 	 */
 	function posts_nav() {
-		if ( is_singular() ) { return; // do nothing
+		if ( is_singular() ) {
+			return; // do nothing
 		}
+
 		global $wp_query;
 
 		// Stop execution if there's only 1 page
-		if ( $wp_query->max_num_pages <= 1 ) { return; }
+		if ( $wp_query->max_num_pages <= 1 ) {
+			return;
+		}
 
 		$paged = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
 		$max = intval( $wp_query->max_num_pages );
 
-		echo '<div class="navigation"><ul>' . "\n";
-
 		//  add current page to the array
 		if ( $paged >= 1 ) {
-			$links[] = $paged; }
+			$links[] = $paged;
+		}
 
 		//  add the pages around the current page to the array
 		if ( $paged >= 3 ) {
-			$links[] = $paged - 1; $links[] = $paged - 2;
+			$links[] = $paged - 1;
+			$links[] = $paged - 2;
 		}
-		if ( ($paged + 2) <= $max ) {
-			$links[] = $paged + 2; $links[] = $paged + 1;
+
+		if ( ( $paged + 2 ) <= $max ) {
+			$links[] = $paged + 2;
+			$links[] = $paged + 1;
 		}
+
+		genesis_markup( array(
+			'html5'   => '<div %s>',
+			'xhtml'   => '<div class="navigation">',
+			'context' => 'archive-pagination',
+		) );
+
+		$before_number = genesis_a11y( 'screen-reader-text' ) ? '<span class="screen-reader-text">' . __( 'Page ', 'artshow' ) .  '</span>' : '';
+
+		echo '<ul>';
 
 		//  Previous Post Link
 		if ( get_previous_posts_link() ) {
-			printf( '<li class="view_room">%s</li>' . "\n", get_previous_posts_link( g_ent( __( '<strong class="larr">&larr;</strong> Previous Room', 'genesis' ) ) ) ); }
+			printf( '<li class="view_room">%s</li>' . "\n", get_previous_posts_link( __( '<strong class="larr">&larr;</strong> Previous Room', 'artshow' ) ) );
+		}
 
-		//  Link to first Page, plus ellipeses, if necessary
+		// Link to first Page, plus ellipeses, if necessary
 		if ( ! in_array( 1, $links ) ) {
-			if ( $paged == 1 ) { $current = ' class="active"'; } else { $current = null; }
-			printf( '<li %s><a href="%s">%s</a></li>' . "\n", $current, get_pagenum_link( 1 ), '1' );
+
+			$class = 1 == $paged ? ' class="active"' : '';
+
+			printf( '<li%s><a href="%s">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( 1 ) ), $before_number . '1' );
 
 			if ( ! in_array( 2, $links ) ) {
-				echo g_ent( '<li>&hellip;</li>' ); }
+				echo '<li class="pagination-omission">&#x02026;</li>' . "\n";
+			}
 		}
 
 		//  Link to Current page, plus 2 pages in either direction (if necessary).
 		sort( $links );
-		foreach ( (array)$links as $link ) {
-			$current = ( $paged == $link ) ? 'class="active"' : '';
-			printf( '<li %s><a href="%s">%s</a></li>' . "\n", $current, get_pagenum_link( $link ), $link );
+		foreach ( (array) $links as $link ) {
+			$class = $paged == $link ? ' class="active"  aria-label="' . __( 'Current page', 'artshow' ) . '"' : '';
+			printf( '<li%s><a href="%s">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( $link ) ), $before_number . $link );
 		}
 
 		//  Link to last Page, plus ellipses, if necessary
 		if ( ! in_array( $max, $links ) ) {
-			if ( ! in_array( $max - 1, $links ) ) {
-				echo g_ent( '<li>&hellip;</li>' ) . "\n"; }
 
-			$current = ( $paged == $max ) ? 'class="active"' : '';
-			printf( '<li %s><a href="%s">%s</a></li>' . "\n", $current, get_pagenum_link( $max ), $max );
+			if ( ! in_array( $max - 1, $links ) ) {
+				echo '<li class="pagination-omission">&#x02026;</li>' . "\n";
+			}
+
+			$class = $paged == $max ? ' class="active"' : '';
+			printf( '<li%s><a href="%s">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( $max ) ), $before_number . $max );
 		}
 
 		//  Next Post Link
 		if ( get_next_posts_link() ) {
-			printf( '<li class="view_room">%s</li>' . "\n", get_next_posts_link( g_ent( __( 'Next Room <strong class="rarr">&rarr;</strong>', 'genesis' ) ) ) ); }
+			printf( '<li class="view_room">%s</li>' . "\n", get_next_posts_link( __( 'Next Room <strong class="rarr">&rarr;</strong>', 'artshow' ) ) );
+		}
 
 		echo '</ul></div>' . "\n";
 	}
 
 	function older_link_text() {
-		$olderlink = g_ent( '<strong>&larr;</strong> ' ) . 'Older Photos';
+		$olderlink = __( '<strong>&larr;</strong> ', 'artshow' ) . 'Older Photos';
 		return $olderlink;
 	}
 	function newer_link_text() {
-		$newerlink = 'Newer Photos' . g_ent( ' <strong>&rarr;</strong' );
+		$newerlink = 'Newer Photos' . __( ' <strong>&rarr;</strong', 'artshow' );
 		return $newerlink;
 	}
 
 	function title_comments() {
-		$comment_title = __( '<h3>Notes</h3>', 'genesis' );
+		$comment_title = __( '<h3>Notes</h3>', 'artshow' );
 		return $comment_title;
 	}
 
@@ -716,12 +753,14 @@ class artshow_theme {
 
 		$terms = get_the_terms( $post_id, 'category' );
 		if ( ! is_array( $terms ) ) {
-			return; }
+			return;
+		}
 
 		$terms = wp_list_pluck( $terms, 'slug' );
 
 		if ( is_array( $terms ) && in_array( 'pressgram', $terms ) ) {
-			wp_set_object_terms( $post_id, array( 'Square' ), 'orientation' ); }
+			wp_set_object_terms( $post_id, array( 'Square' ), 'orientation' );
+		}
 	}
 
 	public function remove_personal_from_homepage( $query ) {

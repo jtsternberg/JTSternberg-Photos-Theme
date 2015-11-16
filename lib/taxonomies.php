@@ -11,7 +11,7 @@ function jtsternberg_taxonomies_register() {
 	jtsternberg_orientation_select_metabox();
 }
 
-function jtsternberg_taxonomies( $post_types ) {
+function jtsternberg_taxonomies() {
 
 	$name = _x( 'Orientation', 'taxonomy general name' );
 	$labels = array(
@@ -38,6 +38,9 @@ function jtsternberg_taxonomies( $post_types ) {
 		'query_var'    => true,
 		'rewrite'      => array( 'slug' => 'orientation' ),
 	);
+
+	$args = wp_parse_args( apply_filters( 'art_show_orientation_taxonomy_args', array() ), $defaults );
+	$post_types = apply_filters( 'art_show_orientation_taxonomy_args', array( 'post' ) );
 
 	register_taxonomy( 'orientation', $post_types, $args );
 }

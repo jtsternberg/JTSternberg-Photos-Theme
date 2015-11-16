@@ -22,7 +22,7 @@ function genesis_404() { ?>
 
 	<div class="post hentry">
 
-		<h1 class="entry-title"><?php _e( 'Oops, the Photo or Room you are looking for is not here.', 'genesis' ); ?></h1>
+		<h1 class="entry-title"><?php _e( 'Oops, the Photo or Room you are looking for is not here.', 'artshow' ); ?></h1>
 		<div class="entry-content">
 			<p><?php printf( __( 'Not sure what happened, but what you are looking for is not here. <a href="%s">Try going back home</a> or see if you can find what you are looking for below.', 'genesis' ), home_url() ); ?></p>
         		<div class="question"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/question.png" /></div>
@@ -51,7 +51,7 @@ function genesis_404() { ?>
 			</div><!-- end .archive-page-->
 
 		</div><!-- end .entry-content -->
-        	
+
         	<div class="frame_bottom"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/large-frame-bottom.png" /></div>
 
 	</div><!-- end .postclass -->
