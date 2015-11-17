@@ -81,7 +81,7 @@ function jtsternberg_orientation_select_metabox() {
 		return;
 	}
 	add_action( 'admin_menu', 'jtsternberg_add_orientation_select_metabox' );
-	add_action( 'save_post', 'jtsternberg_save_orientation_taxonomy_data' );
+	add_action( 'save_post', 'jtsternberg_save_orientation_taxonomy_data', 10, 2 );
 }
 
 function jtsternberg_add_orientation_select_metabox() {
@@ -120,24 +120,26 @@ function jtsternberg_add_orientation_dropdown_box_function( $post ) {
 	}
 }
 
-function jtsternberg_save_orientation_taxonomy_data( $post_id ) {
+function jtsternberg_save_orientation_taxonomy_data( $post_id, $post ) {
 	// verify this came from our screen and with proper authorization.
 	$taxonomy = 'orientation';
 
 	if ( isset($_POST['taxonomy_noncename']) && ! wp_verify_nonce( $_POST['taxonomy_noncename'], 'taxonomy_'. $taxonomy ) ) {
-		return $post_id;
+		return;
 	}
 
 	// verify if this is an auto save routine. If it is our form has not been submitted, so we dont want to do anything
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-		return $post_id;
+		return;
 	}
 
 	// Check permissions
-	if ( 'post' != $_POST['post_type'] ) {
-		  return $post_id;
-	} elseif ( ! current_user_can( 'edit_post', $post_id ) ) {
-		return $post_id;
+	if ( 'post' != $post->post_type ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
 	}
 
 	// OK, we're authenticated: we need to find and save the data
