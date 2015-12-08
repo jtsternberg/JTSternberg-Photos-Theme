@@ -622,7 +622,7 @@ class artshow_theme {
 			'context' => 'archive-pagination',
 		) );
 
-		$before_number = genesis_a11y( 'screen-reader-text' ) ? '<span class="screen-reader-text">' . __( 'Page ', 'artshow' ) .  '</span>' : '';
+		$before_number = function_exists( 'genesis_a11y' ) && genesis_a11y( 'screen-reader-text' ) ? '<span class="screen-reader-text">' . __( 'Page ', 'artshow' ) .  '</span>' : '';
 
 		echo '<ul>';
 
