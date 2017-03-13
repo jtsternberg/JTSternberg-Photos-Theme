@@ -529,10 +529,10 @@ li:hover, li.sfHover {
 }
 /* Content
 ------------------------------------------------------------ */
-#content {
+/*#content {
   float: left;
   width: 470px;
-}
+}*/
 .content-sidebar #content, .sidebar-content #content {
   width: 960px;
 }

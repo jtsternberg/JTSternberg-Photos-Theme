@@ -13,6 +13,8 @@
 require_once( TEMPLATEPATH.'/lib/init.php' );
 require_once( CHILD_DIR.'/lib/taxonomies.php' );
 
+define( 'CHILD_THEME_VERSION', '0.2.0' );
+
 class artshow_theme {
 	public static $instance = null;
 
@@ -162,13 +164,13 @@ class artshow_theme {
 			return;
 		}
 
-			wp_enqueue_script( 'pinterest', 'https://assets.pinterest.com/js/pinit.js' );
+		wp_enqueue_script( 'pinterest', 'https://assets.pinterest.com/js/pinit.js' );
 
-			// Add Stylesheets for IE
-			wp_enqueue_style(
-				'google-font',
-				'https://fonts.googleapis.com/css?family=Josefin+Sans:600,bold,bolditalic'
-			);
+		// Add Stylesheets for IE
+		wp_enqueue_style(
+			'google-font',
+			'https://fonts.googleapis.com/css?family=Josefin+Sans:600,bold,bolditalic'
+		);
 
 	}
 
