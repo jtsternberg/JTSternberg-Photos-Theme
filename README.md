@@ -1,3 +1,3 @@
 # JTSternberg Photos Theme
 
-Theme for http://photos.jtsternberg.com/
+Theme for https://photos.jtsternberg.com/

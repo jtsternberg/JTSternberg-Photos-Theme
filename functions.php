@@ -129,7 +129,7 @@ class artshow_theme {
 	* @since  0.1.0
 	*/
 	function meta() {
-			// echo "<link href='http://fonts.googleapis.com/css?family=Josefin+Sans:600,bold,bolditalic' rel='stylesheet' type='text/css'>";
+			// echo "<link href='https://fonts.googleapis.com/css?family=Josefin+Sans:600,bold,bolditalic' rel='stylesheet' type='text/css'>";
 			echo '<meta name="google-site-verification" content="rX3Aj4eDqSU0-Q0hBW-qsxVYaIUgxshD-kKYjSQAVb0" />';
 			?>
 			<div id="fb-root"></div>
@@ -162,12 +162,12 @@ class artshow_theme {
 			return;
 		}
 
-			wp_enqueue_script( 'pinterest', 'http://assets.pinterest.com/js/pinit.js' );
+			wp_enqueue_script( 'pinterest', 'https://assets.pinterest.com/js/pinit.js' );
 
 			// Add Stylesheets for IE
 			wp_enqueue_style(
 				'google-font',
-				'http://fonts.googleapis.com/css?family=Josefin+Sans:600,bold,bolditalic'
+				'https://fonts.googleapis.com/css?family=Josefin+Sans:600,bold,bolditalic'
 			);
 
 	}
@@ -276,7 +276,7 @@ class artshow_theme {
 		<?php if ( has_post_thumbnail( get_the_ID() ) ) {
 			$img_data = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), 'full' );
 			?>
-			<a href="http://pinterest.com/pin/create/button/?url=<?php echo urlencode( $standard ); ?>&media=<?php echo urlencode( $img_data[0] ); ?>&description=<?php echo urlencode( get_the_excerpt() ); ?>" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
+			<a href="https://pinterest.com/pin/create/button/?url=<?php echo urlencode( $standard ); ?>&media=<?php echo urlencode( $img_data[0] ); ?>&description=<?php echo urlencode( get_the_excerpt() ); ?>" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
 		<?php } ?>
 
 		<?php
@@ -690,7 +690,7 @@ class artshow_theme {
 
 
 	function footer_creds_text($creds) {
-		$creds = '[footer_copyright] <a href="http://about.me/jtsternberg" target="_blank">jtsternberg</a> &bull; Built on the [footer_genesis_link] &bull; Powered by [footer_wordpress_link]';
+		$creds = '[footer_copyright] <a href="https://about.me/jtsternberg" target="_blank">jtsternberg</a> &bull; Built on the [footer_genesis_link] &bull; Powered by [footer_wordpress_link]';
 		return $creds;
 	}
 	function googleanalytics() {
@@ -740,7 +740,7 @@ class artshow_theme {
 
 	function infinite_scroll_credit( $credits ) {
 
-		$credits = '<a href="http://about.me/jtsternberg" rel="author" target="_blank">About me</a> | <a href="http://wordpress.org/" rel="generator">Powered by WordPress</a> | <a class="hosted-by" href="http://j.ustin.co/wpengine_affiliate" target="_blank">Hosted by WPEngine</a>';
+		$credits = '<a href="https://about.me/jtsternberg" rel="author" target="_blank">About me</a> | <a href="https://wordpress.org/" rel="generator">Powered by WordPress</a> | <a class="hosted-by" href="http://j.ustin.co/wpengine_affiliate" target="_blank">Hosted by WPEngine</a>';
 		return $credits;
 	}
 
